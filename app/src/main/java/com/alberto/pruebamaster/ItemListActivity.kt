@@ -34,7 +34,7 @@ import java.net.URL
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-class ItemListActivity : AppCompatActivity() {
+class   ItemListActivity : AppCompatActivity() {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -50,20 +50,18 @@ class ItemListActivity : AppCompatActivity() {
         toolbar.title = title
 
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+            Snackbar.make(view, "Haciendo Petición", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
+            // Al pulsar el Snackbar llamamos al metodo para que cargue el contenido de los post
+            peticionPosts()
         }
 
         if (item_detail_container != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
-            twoPane = true
-            // realizamos la conexión rest http
 
+            twoPane = true
+            
         }
-        peticionPosts()
+
     }
 
     private fun peticionPosts() {
@@ -72,7 +70,7 @@ class ItemListActivity : AppCompatActivity() {
             // capturamos los errores de la peticion
             try {
                 // peticion a un servidor rest que devuelve un json generico
-                val respuesta = URL("http://18.223.212.231/WordPress/?rest_route=/wp/v2/posts").readText()
+                val respuesta = URL("http://18.188.143.237/WordPress/?rest_route=/wp/v2/posts").readText()
                 // parsing data
                 // sabemos que recibimos un array de objetos JSON
                 val miJSONArray = JSONArray(respuesta)
@@ -81,6 +79,7 @@ class ItemListActivity : AppCompatActivity() {
                 DummyContent.ITEMS.clear()
                 DummyContent.ITEM_MAP.clear()
                 for (jsonIndex in 0 .. (miJSONArray.length()-1)) {
+
                     val idpost = miJSONArray.getJSONObject(jsonIndex).getString("id")
                     val titulo = miJSONArray.getJSONObject(jsonIndex).getJSONObject("title").getString("rendered")
                     val resumen = miJSONArray.getJSONObject(jsonIndex).getJSONObject("excerpt").getString("rendered")
